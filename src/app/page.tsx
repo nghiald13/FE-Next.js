@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
@@ -59,7 +59,7 @@ export default function Home() {
           >
             Documentation
           </a>
-          <Button type="primary">I'm learning</Button>
+          <Button variant='outline' className="p-6 hover:text-white hover:bg-secondary">I'm Learning</Button>
         </div>
       </main>
     </div>
