@@ -10,6 +10,10 @@ export class CustomError extends AuthError {
     }
 }
 
+export class InvalidSignInError extends AuthError {
+    static type = 'InvalidSignInError'
+}
+
 export class InactivateAccountError extends AuthError {
     static type = 'InactivateAccountError'
 }

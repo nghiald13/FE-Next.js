@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { signIn } from "next-auth/react"
+import { authenticate } from "@/utils/actions"
 
 
 export function SignInForm({
@@ -26,10 +27,9 @@ export function SignInForm({
         password: formData.get('password'),
         redirectTo: '/dashboard'
       }
-      console.log(">>> check values: ", values)
-      
-      //call API here
-      await signIn("credentials", values)
+
+      const res = await authenticate(values.email, values.password).then(data => JSON.stringify(data))
+      console.log(">>> check res: ", res)
     }
 
   return (
