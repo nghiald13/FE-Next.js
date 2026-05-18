@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { signIn } from "@/auth";
 import Image from "next/image";
 
 export default function Home() {
@@ -59,7 +60,21 @@ export default function Home() {
           >
             Documentation
           </a>
-          <Button variant='outline' className="p-6 hover:text-white hover:bg-secondary">I'm Learning</Button>
+          <form
+            action={async () => {
+              "use server"
+              await signIn()
+            }}
+          >
+            <Button
+              variant='outline'
+              className="p-6 hover:text-white hover:bg-secondary"
+              type="submit"
+            >
+              I'm Learning
+          </Button>
+          </form>
+          
         </div>
       </main>
     </div>
