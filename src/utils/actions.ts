@@ -9,10 +9,12 @@ export async function authenticate(email: string, password: string) {
     const res = await signIn("credentials", {
         email: email,
         password: password,
-        redirectTo: "/dashboard"
+        redirect: false
     })
     return res
-  } catch (error) {
-    
+  } catch (err) {
+    return {
+      error: (err as any).type,
+    }
   }
 }

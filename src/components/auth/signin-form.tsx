@@ -11,8 +11,9 @@ import {
   FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { signIn } from "next-auth/react"
 import { authenticate } from "@/utils/actions"
+import { useRouter } from "next/navigation"
+import { notification } from "antd"
 
 
 export function SignInForm({
@@ -20,16 +21,29 @@ export function SignInForm({
   ...props
 }: React.ComponentProps<"form">) {
 
+  const router = useRouter()
   const handleSignIn = async (formData: any) => {
       
       const values = {
         email: formData.get('email') ,
         password: formData.get('password'),
-        redirectTo: '/dashboard'
       }
 
-      const res = await authenticate(values.email, values.password).then(data => JSON.stringify(data))
-      console.log(">>> check res: ", res)
+      const res = await authenticate(values.email, values.password)
+
+      if (res?.error) {
+
+        // ANT DESIGN
+        notification.error({
+          title: "Error Login",
+          description: res.error,
+          duration: 2,
+        })
+
+      } else {
+        // redirect
+        router.push('/dashboard')
+      }
     }
 
   return (

@@ -13,16 +13,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      authorize: async (credentials) => {
-
-        // logic to verify if the user exists
-        const res = await sendRequest<IBackendRes<ISignIn>>({
-          url: 'http://localhost:8080/v1/api/auth/signin',
+      authorize: async (credentials) => { // this should return a user
+        const res = await fetch('http://localhost:8080/api/v1/auth/signin', {
           method: 'POST',
-          body: {
+          body: JSON.stringify({
             ...credentials
-          }
-        })
+          }),
+          headers: new Headers({
+            'content-type': 'application/json'
+          })
+        }).then(r => r.json())
 
         //api call success
         if (res.statusCode === 201) {
@@ -32,9 +32,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: res.data?.user?.name,
             access_token: res.data?.access_token,
           }
-        } else if (+res.statusCode === 401) { // Unauthorized (Sai mk)
+        } else if (+res.statusCode === 401) { // Unauthorized (means wrong password)
           throw new InvalidSignInError()
-        } else if (+res.statusCode === 400) { // Inactive Account
+        } else if (+res.statusCode === 400) { // BadRequestException (means Inactive Account)
           throw new InactivateAccountError()
         } else {
           throw new Error('Internal Server Error')
@@ -57,6 +57,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     session({ session, token }) {
       (session.user as IUser) = token.user
       return session
-    }
-  }
+    },
+
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth
+    },
+  },
+
 })

@@ -1,9 +1,10 @@
-'use client'
+import DashboardContent from "@/components/layouts/dashboard.content";
 
 const Dashboard = () => {
 
   return (
-    <div>Dashboard Page</div>
+    <>
+    </>
   );
 }
 
