@@ -2,13 +2,14 @@ import { auth } from '@/auth';
 import DashboardContent from '@/components/layouts/dashboard.content';
 import UserFooter from '@/components/layouts/user.footer';
 import UserHeader from '@/components/layouts/user.header';
+import UserSideBar from '@/components/layouts/user.sidebar';
 import UserSideNav from '@/components/layouts/user.sidenav';
 import { Col, Layout } from 'antd';
 
 const DashboardLayout = async ({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) => {
     // const { Content } = Layout
     const session = await auth()
@@ -16,6 +17,7 @@ const DashboardLayout = async ({
     return (
         <Layout>
             <UserSideNav session={session} />
+            <UserSideBar />
             <Layout>
                 <UserHeader />
                 <DashboardContent>

@@ -8,9 +8,9 @@ const UserFooter = () => {
     const currentYear = new Date().getFullYear();
     return (
         <>
-        <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©{currentYear} Created by Ant UED
-        </Footer>
+            <Footer style={{ textAlign: 'center' }}>
+                Le Dai Nghia ©{currentYear}
+            </Footer>
         </>
     )
 }

@@ -7,6 +7,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Avatar, Col, ConfigProvider, Layout, Menu, SiderProps, theme } from 'antd';
+import { signOut } from 'next-auth/react';
 
 const {  Sider } = Layout;
 
@@ -68,7 +69,8 @@ const UserSideNav = (props: any) => {
               key: '6',
               icon: <RollbackOutlined />,
               label: <span>Sign out</span>,
-              danger: true
+              danger: true,
+              onClick: () => signOut()
             },
           ]}
           
