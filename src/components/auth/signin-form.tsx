@@ -30,16 +30,23 @@ export function SignInForm({
     }
 
     const res = await authenticate(values.email, values.password)
-
+    console.log(res)
     if (res?.error) {
-
-      // ANT DESIGN
-      notification.error({
-        title: "Error Login",
-        description: res.error,
-        duration: 2,
+      //If exists error, notify user regardless cases
+      notification.error({ //ANT DESIGN notif feedback
+        title: res.error,
+        description: res.errorMsg,
+        duration: 5,
       })
 
+      //Case inactive account: redirect user to verify page after 5secs delay
+      if (res.error === "InactivateAccountError") {
+        setTimeout(() => {
+          router.push(`/auth/verify/${values.email}`)
+        }, 5000)
+      }
+
+      //Case no error (signin successfully)
     } else {
       // redirect
       router.push('/dashboard')

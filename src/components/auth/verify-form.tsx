@@ -12,14 +12,14 @@ import { verifyAccount } from "@/utils/actions"
 import { toast, Toaster } from "sonner"
 
 const AccountVerifyForm = (props: any) => {
-    const { session } = props
+    const { _id } = props
     const [isLoading, setIsLoading] = useState(false)
     const inputOTPonChange = async (val: string) => {
         if (val.length === 6) {
             setIsLoading(true)
 
             // call backend here
-            const isVerified = await verifyAccount(session?.user?._id, val)
+            const isVerified = await verifyAccount(_id, val)
             if (isVerified) {
                 toast.success("Your account has been verified. Thank you!")
                 setIsLoading(false)
@@ -53,7 +53,7 @@ const AccountVerifyForm = (props: any) => {
                         </CardHeader>
                         <Separator className="max-w-[50%]" />
                         <CardDescription>
-                            <div className="text-lg">We have sent an email contains verifying code to <span className="italic">{session?.user?.email}</span></div>
+                            <div className="text-lg">We have sent an email contains verifying code to <span className="italic">{_id}</span></div>
                             <div className="text-lg">Please input the code below to proceed</div>
                             <div className="text-red-500">Code is expired within 5 minutes</div>
                         </CardDescription>

@@ -12,9 +12,9 @@ export class CustomError extends AuthError {
 }
 
 export class InvalidSignInError extends AuthError {
-    static type = 'Sai thông tin đăng nhập'
+    static type = 'Incorrect email/password'
 }
 
 export class InactivateAccountError extends AuthError {
-    static type = 'Tài khoản chưa được kích hoạt'
+    static type = 'Inactive account'
 }

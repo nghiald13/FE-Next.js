@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials"
 import { InactivateAccountError, InvalidSignInError } from "./utils/customErrors"
 import { sendRequest } from "./utils/api"
 import { IUser } from "./types/next-auth"
- 
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => { // this should return a user
-        const res = await fetch('http://localhost:8080/api/v1/auth/signin', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/signin`, {
           method: 'POST',
           body: JSON.stringify({
             ...credentials
