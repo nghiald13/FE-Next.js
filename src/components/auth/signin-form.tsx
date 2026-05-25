@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { authenticate } from "@/utils/actions"
 import { useRouter } from "next/navigation"
 import { notification } from "antd"
+import { useState } from "react"
+import { Spinner } from "../ui/spinner"
 
 
 export function SignInForm({
@@ -20,12 +22,18 @@ export function SignInForm({
   ...props
 }: React.ComponentProps<"form">) {
 
-  const router = useRouter()
-  const handleSignIn = async (formData: any) => {
+  const [isLoading, setIsLoading] = useState(false)
 
+  const router = useRouter()
+  const handleSignIn = async (e: any) => {
+
+    e.preventDefault()
+    setIsLoading(true)
+
+    const formData = new FormData(e.currentTarget)
     const values = {
-      email: formData.get('email'),
-      password: formData.get('password'),
+      email: formData.get('email') as string,
+      password: formData.get('password') as string,
     }
 
     const res = await authenticate(values.email, values.password)
@@ -45,6 +53,8 @@ export function SignInForm({
         }, 5000)
       }
 
+      setIsLoading(false)
+
       //Case no error (signin successfully)
     } else {
       // redirect
@@ -54,7 +64,7 @@ export function SignInForm({
 
   return (
 
-    <form action={handleSignIn} className={cn("flex flex-col gap-6", className)} {...props}>
+    <form onSubmit={(e) => handleSignIn(e)} className={cn("flex flex-col gap-6", className)} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
           <h1 className="text-2xl font-bold">Login to your account</h1>
@@ -92,7 +102,9 @@ export function SignInForm({
           />
         </Field>
         <Field>
-          <Button type="submit">Login</Button>
+          <Button disabled={isLoading} type="submit">
+            {isLoading ? <Spinner /> : "Sign in"}
+          </Button>
         </Field>
         <FieldSeparator>Or continue with</FieldSeparator>
         <Field>

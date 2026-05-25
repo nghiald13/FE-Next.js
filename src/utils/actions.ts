@@ -1,7 +1,6 @@
 'use server'
 
 import { signIn } from "@/auth"
-import { message } from "antd"
 
 
 
@@ -41,5 +40,32 @@ export async function authenticate(email: string, password: string) {
 }
 
 export async function verifyAccount(userId: string, otpCode: string) {
-  return true
+  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/verify`
+  const result = await fetch(fetchURL, {
+    method: 'POST',
+    body: JSON.stringify({
+      "email": userId,
+      "codeId": otpCode
+    }),
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  }).then(data => data.json())
+
+  return result.data
+}
+
+export async function sendVerificationEmail(email: string) {
+  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/sendEmail`
+  const result = await fetch(fetchURL, {
+    method: 'POST',
+    body: JSON.stringify({
+      "email": email,
+    }),
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  }).then(data => data.json())
+
+  return result.data
 }
