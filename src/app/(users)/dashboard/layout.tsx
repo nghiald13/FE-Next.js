@@ -1,31 +1,29 @@
 import { auth } from '@/auth';
-import DashboardContent from '@/components/layouts/dashboard.content';
-import UserFooter from '@/components/layouts/user.footer';
-import UserHeader from '@/components/layouts/user.header';
 import UserSideBar from '@/components/layouts/user.sidebar';
-import UserSideNav from '@/components/layouts/user.sidenav';
-import { Col, Layout } from 'antd';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 const DashboardLayout = async ({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
-    // const { Content } = Layout
     const session = await auth()
 
     return (
-        <Layout>
-            <UserSideNav session={session} />
-            <UserSideBar />
-            <Layout>
-                <UserHeader />
-                <DashboardContent>
+        <>
+            <div className='grid grid-cols-12'>
+                <div className='col-span-3'>
+                    <SidebarProvider>
+                        <UserSideBar session={session} />
+                        <SidebarTrigger />
+                    </SidebarProvider>
+                </div>
+                <div className='col-span-9 justify-center place-items-center'>
                     {children}
-                </DashboardContent>
-                <UserFooter />
-            </Layout>
-        </Layout>
+                </div>
+            </div>
+        </>
+
     )
 }
 

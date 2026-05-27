@@ -1,10 +1,8 @@
 import AccountVerifyForm from "@/components/auth/verify-form"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const VerifyPage = async ({ params, }: { params: { _id: string } }) => {
+const VerifyPage = async (
+    { params, }: { params: { _id: string } }
+) => {
     const { _id } = await params
     const decoder_id = decodeURIComponent(_id)
 

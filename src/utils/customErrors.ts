@@ -18,3 +18,7 @@ export class InvalidSignInError extends AuthError {
 export class InactivateAccountError extends AuthError {
     static type = 'Inactive account'
 }
+
+export class ExpiredAcessToken extends AuthError {
+    
+}

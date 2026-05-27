@@ -1,19 +1,11 @@
 'use client'
 
-import { Layout } from "antd";
-
-const DashboardContent = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
-
-    const { Content } = Layout
-    return (
-        <Content>
-          Dashboard Content
-        </Content>
-    )
+const DashboardContent = () => {
+  return (
+    <>
+      <div>Content goes here</div>
+    </>
+  )
 }
 
 export default DashboardContent

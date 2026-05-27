@@ -26,12 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         //api call success
         if (res.statusCode === 201) {
-          return {
-            _id: res.data?.user?._id,
-            email: res.data?.user?.email,
-            name: res.data?.user?.name,
-            access_token: res.data?.access_token,
-          }
+          return res.data
         } else if (+res.statusCode === 401) { // Unauthorized (means wrong password)
           throw new InvalidSignInError()
         } else if (+res.statusCode === 400) { // BadRequestException (means Inactive Account)
@@ -49,13 +44,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
   callbacks: {
     jwt({ token, user }) {
-      if (user) { // user available during sign-in
-        token.user = user as IUser
+      if (user) { // user here means response from successful signin, which is now contains { user: {...}, access_token: ...}
+        const data = user as any
+        token.user = data.user as any
+        token.access_token = data.access_token
       }
       return token
     },
     session({ session, token }) {
-      (session.user as IUser) = token.user
+      (session.user as any) = token.user
+      session.access_token = token.access_token as string
       return session
     },
 

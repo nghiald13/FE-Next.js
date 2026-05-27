@@ -1,16 +1,10 @@
-'use client'
-import { Layout } from 'antd';
-
-
-const { Footer } = Layout;
+'use client';
 
 const UserFooter = () => {
     const currentYear = new Date().getFullYear();
     return (
         <>
-            <Footer style={{ textAlign: 'center' }}>
-                Le Dai Nghia ©{currentYear}
-            </Footer>
+            <div>Le Dai Nghia 2026</div>
         </>
     )
 }

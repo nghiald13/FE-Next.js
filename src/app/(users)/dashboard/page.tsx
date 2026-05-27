@@ -1,9 +1,10 @@
-import DashboardContent from "@/components/layouts/dashboard.content";
-
 const Dashboard = () => {
 
   return (
     <>
+      <div>
+        DashboardContent
+      </div>
     </>
   );
 }
