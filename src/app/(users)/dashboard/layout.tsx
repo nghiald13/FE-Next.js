@@ -1,6 +1,6 @@
 import { auth } from '@/auth';
 import UserSideBar from '@/components/layouts/user.sidebar';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 const DashboardLayout = async ({
     children,
@@ -11,17 +11,13 @@ const DashboardLayout = async ({
 
     return (
         <>
-            <div className='grid grid-cols-12'>
-                <div className='col-span-3'>
-                    <SidebarProvider>
-                        <UserSideBar session={session} />
-                        <SidebarTrigger />
-                    </SidebarProvider>
-                </div>
-                <div className='col-span-9 justify-center place-items-center'>
+            <SidebarProvider>
+                <UserSideBar session={session} />
+                <SidebarTrigger />
+                <SidebarInset>
                     {children}
-                </div>
-            </div>
+                </SidebarInset>
+            </SidebarProvider>
         </>
 
     )

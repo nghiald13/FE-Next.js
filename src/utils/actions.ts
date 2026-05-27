@@ -2,7 +2,7 @@
 
 import { signIn } from "@/auth"
 
-
+const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`
 
 export async function authenticate(email: string, password: string) {
   try {
@@ -40,7 +40,7 @@ export async function authenticate(email: string, password: string) {
 }
 
 export async function verifyAccount(userId: string, otpCode: string) {
-  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/verify`
+  const fetchURL = `${baseURL}/api/v1/auth/verify`
   const result = await fetch(fetchURL, {
     method: 'POST',
     body: JSON.stringify({
@@ -56,7 +56,7 @@ export async function verifyAccount(userId: string, otpCode: string) {
 }
 
 export async function sendVerificationEmail(userId: string) {
-  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/sendEmail`
+  const fetchURL = `${baseURL}/api/v1/auth/sendEmail`
   const result = await fetch(fetchURL, {
     method: 'POST',
     body: JSON.stringify({
@@ -71,7 +71,7 @@ export async function sendVerificationEmail(userId: string) {
 }
 
 export async function createAccount(name?: string, email?: string, password?: string) {
-  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/signup`
+  const fetchURL = `${baseURL}/api/v1/auth/signup`
   const result = await fetch(fetchURL, {
     method: 'POST',
     body: JSON.stringify({
@@ -95,7 +95,7 @@ export async function createAccount(name?: string, email?: string, password?: st
 }
 
 export async function getListUsers(query: string, accessToken: string) {
-  const fetchURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users?${query}`
+  const fetchURL = `${baseURL}/api/v1/users?${query}`
   const result = await fetch(fetchURL, {
     method: 'GET',
     headers: new Headers({
@@ -109,8 +109,30 @@ export async function getListUsers(query: string, accessToken: string) {
   } else {
     return {
       statusCode: result.statusCode,
-      error: result.error,
       message: result.message
     }
+  }
+}
+
+export async function deleteUser(userId: string, accessToken: string) {
+  const fetchURL = `${baseURL}/api/v1/users/${userId}`
+  const result = await fetch(fetchURL, {
+    method: 'DELETE',
+    headers: new Headers({
+      "content-type": "application/json",
+      "Authorization": `Bearer ${accessToken}`
+    })
+  }).then(res => res.json())
+
+  if (result.statusCode === 200) {
+    return {
+      message: "Delete successfully"
+    }
+  }
+
+  return {
+    statusCode: result.statusCode,
+    message: "Oops! There's something wrong. Please try again later!",
+    error: result.error
   }
 }
