@@ -136,3 +136,27 @@ export async function deleteUser(userId: string, accessToken: string) {
     error: result.error
   }
 }
+export async function updateUser(user: any, accessToken: string) {
+  const fetchURL = `${baseURL}/api/v1/users`
+  const result = await fetch(fetchURL, {
+    method: 'PATCH',
+    body: JSON.stringify(user),
+    headers: new Headers({
+      "content-type": "application/json",
+      "Authorization": `Bearer ${accessToken}`
+    })
+  }).then(res => res.json())
+
+  if (result.statusCode === 200) {
+    return {
+      statusCode: result.statusCode,
+      message: "Applied changes"
+    }
+  }
+
+  return {
+    statusCode: result.statusCode,
+    error: result.error,
+    message: result.message
+  }
+}
