@@ -1,15 +1,10 @@
 'use client'
 
-import { useState } from "react"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Slider } from "@/components/ui/slider"
-import { Separator } from "@/components/ui/separator"
-import { Grid, ListFilter, SlidersHorizontal, Search } from "lucide-react"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import { ScrollArea } from "../ui/scroll-area"
 
 // 💡 Mock Data danh sách sản phẩm mẫu
 const MOCK_PRODUCTS = [
@@ -21,62 +16,43 @@ const MOCK_PRODUCTS = [
     { id: "6", name: "Travel Backpack", price: 70, category: "Accessories", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=60" },
 ]
 
-const ProductsListPage = () => {
-    const [searchQuery, setSearchQuery] = useState("")
+const ProductsListPage = (props: any) => {
+
+    const { listProducts } = props
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8 md:px-6 lg:px-8">
-            {/* 🌟 HỆ THỐNG HEADER TRÊN CÙNG: TIÊU ĐỀ & THANH TÌM KIẾM */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Our Products</h1>
-                    <p className="text-muted-foreground mt-1">Explore our curated collection of premium tech and lifestyle goods.</p>
-                </div>
-
-                {/* Thanh Search tích hợp Icon */}
-                <div className="relative w-full md:w-80">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                    <Input
-                        placeholder="Search products..."
-                        className="pl-9 w-full"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                </div>
-            </div>
-
-            <div className="flex flex-col lg:flex-row gap-8">
+        <>
+            <ScrollArea className="flex flex-col lg:flex-row gap-8 w-full h-[75vh] p-4">
                 {/* 🌟 LƯỚI HIỂN THỊ SẢN PHẨM (PRODUCT GRID) */}
                 <main className="flex-1">
                     {/* Tự động chia cột linh hoạt: 1 cột di động, 2 cột tablet, 3 cột PC */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {MOCK_PRODUCTS.map((product) => (
-
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {listProducts?.map((product: any) => (
                             /* Bọc Card bằng Link để hướng tới trang chi tiết */
-                            <Link href={`/products/${product.id}`} key={product.id} className="group block h-full">
+                            <Link href={`/products/${product?._id}`} key={product?._id} className="group block h-full">
                                 <Card className="
                   h-full overflow-hidden border border-muted bg-card shadow-sm
                   hover:shadow-md transition-all duration-300 select-none cursor-pointer
                   hover:scale-[1.02] 
                 ">
-                                    {/* Tỉ lệ khung ảnh 4/3 hoặc 16/9 tùy sở thích */}
+                                    {/* Tỉ lệ khung ảnh 4/3 */}
                                     <AspectRatio ratio={4 / 3} className="bg-muted overflow-hidden relative">
                                         <img
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            src={product.image}
-                                            alt={product.name}
+                                            src={product?.image ? product?.image : "https://images.unsplash.com/photo-1649399337535-afbf61e74cab?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                                            alt={product?.name}
                                         />
                                         <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-2 py-0.5 rounded text-xs font-semibold shadow-xs">
-                                            {product.category}
+                                            {product?.manufacturer}
                                         </div>
                                     </AspectRatio>
 
                                     <CardHeader className="p-4 space-y-1">
                                         <CardTitle className="text-base font-semibold tracking-tight line-clamp-1 group-hover:text-primary transition-colors">
-                                            {product.name}
+                                            {product?.name}
                                         </CardTitle>
                                         <CardDescription className="text-sm font-medium text-foreground/90 font-mono">
-                                            ${product.price}.00
+                                            ${product?.price}.00
                                         </CardDescription>
                                     </CardHeader>
 
@@ -86,7 +62,7 @@ const ProductsListPage = () => {
                                             variant="secondary"
                                             onClick={(e) => {
                                                 e.preventDefault(); // 💡 Chặn không cho kích hoạt click của thẻ Link cha
-                                                alert(`Added ${product.name} to cart!`);
+                                                alert(`Added ${product?.name} to cart!`);
                                             }}
                                         >
                                             Add to cart
@@ -97,8 +73,9 @@ const ProductsListPage = () => {
                         ))}
                     </div>
                 </main>
-            </div>
-        </div>
+            </ScrollArea>
+        </>
+
     )
 }
 

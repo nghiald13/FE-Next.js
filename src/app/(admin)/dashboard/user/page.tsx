@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import DashboardForbidden from "@/components/dashboard/user/dashboard.forbidden";
 import DashboardUserList from "@/components/dashboard/user/dashboard.user.list";
-import DashboardUserPagination from "@/components/dashboard/user/dashboard.user.pagination";
+import ResultsPagination from "@/components/layouts/results-pagination";
 import { getListUsers } from "@/utils/actions";
 import queryString from "query-string";
 
@@ -31,7 +31,7 @@ const ManageUsersPage = async (
     return (
         <div>
             <DashboardUserList meta={meta} session={session} results={results} statusCode={+statusCode} message={message} />
-            <DashboardUserPagination current={+current} meta={meta} />
+            <ResultsPagination current={+current} meta={meta} url="/dashboard/user" />
         </div>
     )
 }

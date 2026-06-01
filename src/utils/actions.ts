@@ -136,6 +136,7 @@ export async function deleteUser(userId: string, accessToken: string) {
     error: result.error
   }
 }
+
 export async function updateUser(user: any, accessToken: string) {
   const fetchURL = `${baseURL}/api/v1/users`
   const result = await fetch(fetchURL, {
@@ -159,4 +160,28 @@ export async function updateUser(user: any, accessToken: string) {
     error: result.error,
     message: result.message
   }
+}
+
+export async function getListProducts(query: string) {
+  const fetchURL = `${baseURL}/api/v1/products?${query}`
+  const result = await fetch(fetchURL, {
+    method: 'GET',
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  }).then(res => res.json())
+
+  return result.data
+}
+
+export async function getListManufacturers() {
+  const fetchURL = `${baseURL}/api/v1/products/manufacturers`
+  const result = await fetch(fetchURL, {
+    method: 'GET',
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  }).then(res => res.json())
+
+  return result.data
 }

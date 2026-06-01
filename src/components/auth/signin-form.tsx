@@ -12,9 +12,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { authenticate } from "@/utils/actions"
 import { useRouter } from "next/navigation"
-import { notification } from "antd"
 import { useState } from "react"
 import { Spinner } from "../ui/spinner"
+import Link from "next/link"
+import { toast } from "sonner"
 
 
 export function SignInForm({
@@ -40,10 +41,8 @@ export function SignInForm({
     console.log(res)
     if (res?.error) {
       //If exists error, notify user regardless cases
-      notification.error({ //ANT DESIGN notif feedback
-        title: res.error,
-        description: res.errorMsg,
-        duration: 5,
+      toast.error(res.error, {
+        description: res.errorMsg
       })
 
       //Case inactive account: redirect user to verify page after 5secs delay
@@ -67,9 +66,9 @@ export function SignInForm({
     <form onSubmit={(e) => handleSignIn(e)} className={cn("flex flex-col gap-6", className)} {...props}>
       <FieldGroup>
         <div className="flex flex-col items-center gap-1 text-center">
-          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <h1 className="text-2xl font-bold">Sign in to your account</h1>
           <p className="text-sm text-balance text-muted-foreground">
-            Enter your email below to login to your account
+            Enter your email below to sign in to your account
           </p>
         </div>
         <Field>
@@ -119,9 +118,7 @@ export function SignInForm({
           </Button>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
-            <a href="#" className="underline underline-offset-4">
-              Sign up
-            </a>
+            <Link href="/auth/signup" passHref className="inline underline">Sign up</Link>
           </FieldDescription>
         </Field>
       </FieldGroup>

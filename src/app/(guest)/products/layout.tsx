@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { ProductsSidebar } from "@/components/products/products.sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { getListManufacturers } from "@/utils/actions";
 
 const ProductPageLayout = async ({
     children,
@@ -10,11 +11,13 @@ const ProductPageLayout = async ({
 
     const session = await auth()
 
+    const listManufacturers = await getListManufacturers()
+
     return (
         <>
             <SidebarProvider>
-                <ProductsSidebar session={session} />
-                <SidebarTrigger />
+                <ProductsSidebar listManufacturers={listManufacturers} session={session} />
+                <SidebarTrigger className="sticky top-0" />
                 <SidebarInset>
                     {children}
                 </SidebarInset>

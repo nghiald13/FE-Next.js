@@ -6,6 +6,7 @@ import { Avatar, AvatarImage } from "../ui/avatar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import SidebarUserFooter from "./sidebar.footer"
 
 const UserSideBar = (props: any) => {
     const { session } = props
@@ -51,25 +52,7 @@ const UserSideBar = (props: any) => {
                 </SidebarContent>
 
                 {/* ================= The footer of sidebar ================= */}
-                <SidebarFooter>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <SidebarMenuButton className="py-5">
-                                        <Avatar>
-                                            <AvatarImage src="https://pbs.twimg.com/media/G5IXXkfWoAAhjNQ?format=png&name=360x360" alt="username" />
-                                        </Avatar>
-                                        <div className="grid flex text-left leading-tight ">
-                                            <span className="truncate font-medium">{session.user.name}</span>
-                                            <span className="truncate text-xs">{session.user.email}</span>
-                                        </div>
-                                    </SidebarMenuButton>
-                                </DropdownMenuTrigger>
-                            </DropdownMenu>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarFooter>
+                <SidebarUserFooter session={session} />
             </Sidebar>
         </>
     )

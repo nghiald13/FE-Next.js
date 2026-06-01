@@ -9,7 +9,7 @@ export default function SignupPage() {
       {/* ==================== 1/3 view background image ==================== */}
       <div className="relative hidden bg-muted lg:block"> {/* Default hidden for <= lg devices, else display block */}
         <img
-          src="https://gmhsart.weebly.com/uploads/6/4/9/6/6496393/man-1246233-1920_orig.jpg"
+          src="/brand-logo/mecsu-sign-logo.jfif"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
