@@ -5,23 +5,50 @@ import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { ScrollArea } from "../ui/scroll-area"
-
-// 💡 Mock Data danh sách sản phẩm mẫu
-const MOCK_PRODUCTS = [
-    { id: "1", name: "Wireless Headphones", price: 99, category: "Electronics", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60" },
-    { id: "2", name: "Leather Wallet", price: 45, category: "Accessories", image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&auto=format&fit=crop&q=60" },
-    { id: "3", name: "Mechanical Keyboard", price: 120, category: "Electronics", image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=60" },
-    { id: "4", name: "Running Shoes", price: 85, category: "Footwear", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60" },
-    { id: "5", name: "Minimalist Watch", price: 150, category: "Accessories", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60" },
-    { id: "6", name: "Travel Backpack", price: 70, category: "Accessories", image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop&q=60" },
-]
+import { ShoppingCart } from "lucide-react"
+import { addToCartAction } from "@/utils/cart.actions"
+import { useEffect, useState } from "react"
+import { getCookie } from "cookies-next/client"
 
 const ProductsListPage = (props: any) => {
 
     const { listProducts } = props
 
+    useEffect(() => {
+        const cartCookie = getCookie('anonymous_cart')
+        if (cartCookie) {
+            try {
+                const cart = JSON.parse(cartCookie as string)
+                setCartAmount(cart.length)
+            } catch (e) {
+                setCartAmount(0)
+            }
+        }
+    }, [])
+
+    const [cartAmount, setCartAmount] = useState<number>(0)
+
     return (
         <>
+            {/** Sticky Cart */}
+            <div className="fixed top-5 right-5 z-50">
+                <Link href="/cart">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="rounded-full w-14 h-14 bg-white shadow-lg relative hover:scale-105 transition-transform"
+                    >
+                        <ShoppingCart className="size-6 text-foreground" />
+
+                        {cartAmount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground font-mono font-bold text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-sm animate-in zoom-in duration-200">
+                                {cartAmount}
+                            </span>
+                        )}
+                    </Button>
+                </Link>
+            </div>
+
             <ScrollArea className="flex flex-col lg:flex-row gap-8 w-full h-[75vh] p-4">
                 {/* 🌟 LƯỚI HIỂN THỊ SẢN PHẨM (PRODUCT GRID) */}
                 <main className="flex-1">
@@ -52,7 +79,7 @@ const ProductsListPage = (props: any) => {
                                             {product?.name}
                                         </CardTitle>
                                         <CardDescription className="text-sm font-medium text-foreground/90 font-mono">
-                                            ${product?.price}.00
+                                            ${product?.price}
                                         </CardDescription>
                                     </CardHeader>
 
@@ -62,7 +89,8 @@ const ProductsListPage = (props: any) => {
                                             variant="secondary"
                                             onClick={(e) => {
                                                 e.preventDefault(); // 💡 Chặn không cho kích hoạt click của thẻ Link cha
-                                                alert(`Added ${product?.name} to cart!`);
+                                                addToCartAction(product._id, 1)
+                                                setCartAmount(prev => prev + 1)
                                             }}
                                         >
                                             Add to cart

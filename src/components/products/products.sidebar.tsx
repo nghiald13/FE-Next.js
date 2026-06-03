@@ -14,6 +14,7 @@ import SidebarUserFooter from "../layouts/sidebar.footer"
 import BrandLogo from "../layouts/brand-logo"
 import { useRouter, useSearchParams } from "next/navigation"
 import queryString from "query-string"
+import { useTransition, useOptimistic } from "react"
 
 export function ProductsSidebar(props: any) {
     const searchParams = useSearchParams()
@@ -21,23 +22,41 @@ export function ProductsSidebar(props: any) {
 
     const params = queryString.parse(searchParams.toString())
     const manu: string[] = params.manufacturer ? (params.manufacturer as string).split(',') : []
-    const handleCheck = (manufacturer: string, checked: boolean) => {
-        let m = [...manu]
 
-        if (checked) {
-            m.push(manufacturer)
-        } else m = m.filter(item => item !== manufacturer)
-
-        const updatedParams = {
-            ...params,
-            manufacturer: m.length > 0 ? m.join(",") : undefined,
-            current: "1"
+    const [optimisticManufacturers, setOptimisticManufacturers] = useOptimistic(
+        manu,
+        (state, { manufacturer, checked }: { manufacturer: string; checked: boolean }) => {
+            if (checked) {
+                return [...state, manufacturer]
+            } else {
+                return state.filter(item => item !== manufacturer)
+            }
         }
+    )
+    const [isPending, startTransition] = useTransition()
 
-        router.push(`/products?${queryString.stringify(updatedParams, {
-            skipNull: true,
-            skipEmptyString: true
-        })}`)
+    const handleCheck = (manufacturer: string, checked: boolean) => {
+        startTransition(() => {
+            setOptimisticManufacturers({ manufacturer, checked })
+
+            let m = [...manu]
+
+            if (checked) {
+                m.push(manufacturer)
+            } else m = m.filter(item => item !== manufacturer)
+
+            const updatedParams = {
+                ...params,
+                manufacturer: m.length > 0 ? m.join(",") : undefined,
+                current: "1"
+            }
+
+            router.push(`/products?${queryString.stringify(updatedParams, {
+                skipNull: true,
+                skipEmptyString: true
+            })}`)
+        })
+
     }
 
     const { listManufacturers, session } = props
@@ -59,7 +78,7 @@ export function ProductsSidebar(props: any) {
                     </SidebarGroupLabel>
                     <SidebarGroupContent className="space-y-3">
                         {listManufacturers.map((manufacturer: any) => {
-                            const isChecked = manu.includes(manufacturer)
+                            const isChecked = optimisticManufacturers.includes(manufacturer)
 
                             return (
                                 <div key={manufacturer} className="flex items-center gap-3">

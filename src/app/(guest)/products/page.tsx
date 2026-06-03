@@ -1,6 +1,6 @@
 import ProductsHeader from "@/components/products/products.header"
 import ProductListPage from "@/components/products/products.list"
-import { getListManufacturers, getListProducts } from "@/utils/actions"
+import { getListProducts } from "@/utils/actions"
 import queryString from "query-string"
 
 const ProductPage = async (
@@ -9,7 +9,7 @@ const ProductPage = async (
 
     const {
         kw = '',
-        manufacturer= '',
+        manufacturer = '',
         current = 1,
         pageSize = 24 } = await searchParams
 

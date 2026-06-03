@@ -32,13 +32,6 @@ const ProductsHeader = (props: any) => {
     }, [kw])
     return (
         <>
-            {/** Sticky Cart */}
-            <Avatar asChild>
-                <Button variant="outline" className="rounded-full fixed top-5 right-5 z-10">
-                    <ShoppingCart size={36} />
-                    <AvatarBadge className="bg-primary text-[9px]">2</AvatarBadge>
-                </Button>
-            </Avatar>
 
             {/* 🌟 HỆ THỐNG HEADER TRÊN CÙNG: TIÊU ĐỀ & THANH TÌM KIẾM */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
