@@ -7,7 +7,6 @@ import { redirect } from 'next/navigation';
 
 const CART_COOKIE_NAME = 'anonymous_cart';
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
-const session = await auth()
 interface CartItemSummary {
     id: string;
     amount: number;
@@ -66,6 +65,9 @@ export async function updateCartQuantityAction(productId: string, newQuantity: n
 }
 
 export async function processPayment(total: number) {
+    const session = await auth()
+    if (!session) throw new Error("You must be signed in")
+
     const fetchURL = `${baseURL}/api/v1/payment`
     const res = await fetch(fetchURL, {
         method: "POST",
@@ -74,9 +76,13 @@ export async function processPayment(total: number) {
         }),
         headers: new Headers({
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${session?.access_token}`
+            "Authorization": `Bearer ${session?.access_token || ""}`
         })
     }).then(r => r.json())
 
-    if (res?.data) redirect(res.data)
+    if (res.statusCode === 201) {
+        return redirect(res.data)
+    } else if (res.statusCode === 401) {
+        throw new Error("Sign in session expired.")
+    } else throw new Error("Internal server error")
 }

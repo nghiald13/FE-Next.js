@@ -5,19 +5,24 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card
 import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import { processPayment } from "@/utils/cart.actions"
+import { toast } from "sonner"
 
-interface CartBillingProps {
-    items: any[]
-}
-
-const CartBilling = (props: CartBillingProps) => {
+const CartBilling = (props: any) => {
     const { items } = props
 
     // Tính tổng giá trị đơn hàng sơ bộ
-    const subtotal = items.reduce((sum, item) => sum + (item.price * item.amount), 0)
+    const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.amount), 0)
     const shippingFee = 0 // Freeship hoặc phí ship mặc định
     const tax = Math.round(subtotal * 0.08)    // Thuế VAT 8%
     const total = subtotal + shippingFee + tax
+
+    const handlePayment = async () => {
+        try {
+            await processPayment(total)
+        } catch (err: any) {
+            toast.error(err.message)
+        }
+    }
 
     return (
         <Card className="bg-white border-muted shadow-sm rounded-xl">
@@ -81,7 +86,7 @@ const CartBilling = (props: CartBillingProps) => {
                 <Button
                     className="w-full font-semibold group h-11 text-sm shadow-sm hover:opacity-95 active:scale-[0.99] transition-transform"
                     disabled={subtotal === 0}
-                    onClick={() => processPayment(total)}
+                    onClick={() => handlePayment()}
                 >
                     <CreditCard className="size-4 mr-2" />
                     Tiến hành thanh toán

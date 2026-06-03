@@ -1,6 +1,6 @@
+import { auth } from "@/auth";
 import CartBilling from "@/components/cart/cart.billings";
 import CartItems from "@/components/cart/cart.items";
-import { Card } from "@/components/ui/card";
 import { getListProducts } from "@/utils/actions";
 import { getCartFromCookie } from "@/utils/cart.actions";
 import queryString from "query-string";
@@ -26,6 +26,8 @@ const MOCK_CART = [
 ];
 
 const CartPage = async () => {
+    
+    const session = await auth()
 
     // 1. Lấy mảng [{id, quantity}] từ cookie trên Server
     const anonymousCart = await getCartFromCookie();
@@ -68,7 +70,7 @@ const CartPage = async () => {
                 </div>
                 {/* BÊN PHẢI: TÓM TẮT HÓA ĐƠN & THANH TOÁN (Chiếm 4/12 cột) */}
                 <div className="lg:col-span-4 w-full lg:sticky lg:top-6">
-                    <CartBilling items={fullCartItems} />
+                    <CartBilling session={session} items={fullCartItems} />
                 </div>
             </div>
 
