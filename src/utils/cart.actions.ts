@@ -9,7 +9,7 @@ const CART_COOKIE_NAME = 'anonymous_cart';
 const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
 interface CartItemSummary {
     id: string;
-    amount: number;
+    quantity: number;
 }
 
 // 🛒 1. Lấy danh sách giỏ hàng sơ bộ từ Cookie
@@ -31,9 +31,9 @@ export async function addToCartAction(productId: string, amount: number = 1) {
     const existingItem = cart.find(item => item.id === productId);
 
     if (existingItem) {
-        existingItem.amount += amount;
+        existingItem.quantity += amount;
     } else {
-        cart.push({ id: productId, amount });
+        cart.push({ id: productId, quantity: amount });
     }
 
     // Lưu ngược lại vào Cookie (Hạn 30 ngày)
@@ -54,7 +54,7 @@ export async function updateCartQuantityAction(productId: string, newQuantity: n
         cart = cart.filter(item => item.id !== productId);
     } else {
         // Cập nhật số lượng mới
-        cart = cart.map(item => item.id === productId ? { ...item, amount: newQuantity } : item);
+        cart = cart.map(item => item.id === productId ? { ...item, quantity: newQuantity } : item);
     }
 
     await setCookie(CART_COOKIE_NAME, JSON.stringify(cart), {
@@ -64,15 +64,19 @@ export async function updateCartQuantityAction(productId: string, newQuantity: n
     });
 }
 
-export async function processPayment(total: number) {
+export async function processPayment(billing: any, items: any) {
     const session = await auth()
-    if (!session) throw new Error("You must be signed in")
+    if (!session?.user) throw new Error("You must be signed in")
+
+    const user = session.user
 
     const fetchURL = `${baseURL}/api/v1/payment`
     const res = await fetch(fetchURL, {
         method: "POST",
         body: JSON.stringify({
-            amount: total
+            userInfo: user,
+            items: items,
+            billing: billing,
         }),
         headers: new Headers({
             "Content-Type": "application/json",

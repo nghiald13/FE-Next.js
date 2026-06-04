@@ -8,17 +8,21 @@ import { processPayment } from "@/utils/cart.actions"
 import { toast } from "sonner"
 
 const CartBilling = (props: any) => {
-    const { items } = props
+    const { items } = props // items in cart
 
     // Tính tổng giá trị đơn hàng sơ bộ
-    const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.amount), 0)
-    const shippingFee = 0 // Freeship hoặc phí ship mặc định
+    const subtotal = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0)
+    const shippingFee = 0 // Freeship hoặc phí ship mặc đị
     const tax = Math.round(subtotal * 0.08)    // Thuế VAT 8%
     const total = subtotal + shippingFee + tax
 
     const handlePayment = async () => {
+        const billing = {
+            totalPrice: subtotal, // UnitPrice * Quantity
+            taxAmount: tax,
+        }
         try {
-            await processPayment(total)
+            await processPayment(billing, items)
         } catch (err: any) {
             toast.error(err.message)
         }
@@ -27,7 +31,7 @@ const CartBilling = (props: any) => {
     return (
         <Card className="bg-white border-muted shadow-sm rounded-xl">
             <CardHeader className="p-6 pb-4">
-                <CardTitle className="text-lg font-bold tracking-tight text-foreground">Order Summary</CardTitle>
+                <CardTitle className="text-lg font-bold tracking-tight text-foreground">Billing Summary</CardTitle>
             </CardHeader>
 
             <CardContent className="p-6 pt-0 space-y-5">
@@ -36,10 +40,10 @@ const CartBilling = (props: any) => {
                 <div className="flex items-center gap-2">
                     <div className="relative flex-1">
                         <Tag className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-                        <Input placeholder="Mã giảm giá (PROMO)" className="pl-9 h-9 text-sm focus-visible:ring-primary" />
+                        <Input placeholder="PROMO CODE" className="pl-9 h-9 text-sm focus-visible:ring-primary" />
                     </div>
                     <Button variant="outline" size="sm" className="h-9 font-medium px-4">
-                        Áp dụng
+                        Apply
                     </Button>
                 </div>
 
@@ -48,32 +52,32 @@ const CartBilling = (props: any) => {
                 {/* Các dòng chi tiết chi phí */}
                 <div className="space-y-3 text-sm">
                     <div className="flex justify-between items-center text-muted-foreground">
-                        <span>Tạm tính (Subtotal)</span>
-                        <span className="font-mono font-semibold text-foreground">{subtotal} VND</span>
+                        <span>Subtotal</span>
+                        <span className="font-mono font-semibold text-foreground">{Number(subtotal).toLocaleString('vi-VN')} VND</span>
                     </div>
 
                     <div className="flex justify-between items-center text-muted-foreground">
-                        <span>Phí giao hàng (Shipping)</span>
+                        <span>Shipping Fee</span>
                         {shippingFee === 0 ? (
-                            <span className="text-emerald-600 font-medium text-xs bg-emerald-50 px-2 py-0.5 rounded">Miễn phí</span>
+                            <span className="text-emerald-600 font-medium text-xs bg-emerald-50 px-2 py-0.5 rounded">Free Delivery</span>
                         ) : (
                             <span className="font-mono font-semibold text-foreground">{shippingFee} VND</span>
                         )}
                     </div>
 
                     <div className="flex justify-between items-center text-muted-foreground">
-                        <span>Thuế ước tính (VAT 8%)</span>
-                        <span className="font-mono font-semibold text-foreground">{tax} VND</span>
+                        <span>Taxes (VAT 8%)</span>
+                        <span className="font-mono font-semibold text-foreground">{Number(tax).toLocaleString('vi-VN')} VND</span>
                     </div>
 
                     <Separator className="my-2 bg-slate-100" />
 
                     {/* Tổng cộng cuối cùng */}
                     <div className="flex justify-between items-baseline pt-1">
-                        <span className="text-base font-bold text-foreground">Tổng cộng</span>
+                        <span className="text-base font-bold text-foreground">Total</span>
                         <div className="text-right">
                             <p className="font-mono text-2xl font-extrabold text-primary tracking-tight">
-                                {total} VND
+                                {Number(total).toLocaleString('vi-VN')} VND
                             </p>
                         </div>
                     </div>
@@ -89,7 +93,7 @@ const CartBilling = (props: any) => {
                     onClick={() => handlePayment()}
                 >
                     <CreditCard className="size-4 mr-2" />
-                    Tiến hành thanh toán
+                    Process Payment
                     <ArrowRight className="size-4 ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
             </CardFooter>

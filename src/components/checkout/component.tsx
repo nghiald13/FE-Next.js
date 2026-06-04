@@ -40,7 +40,7 @@ export default function CheckoutResultPage(props: any) {
                 if (data?.status === 'PAID') {
                     setDbStatus('PAID')
                 } else {
-                    setDbStatus('LOADING') // Có thể Webhook IPN từ MoMo sang NestJS đang bị trễ chậm vài giây
+                    setDbStatus('LOADING')
                 }
             } catch (error) {
                 console.error('Lỗi kiểm tra đơn hàng từ Backend:', error)
@@ -91,8 +91,8 @@ export default function CheckoutResultPage(props: any) {
 
                     <CardTitle className="text-2xl font-bold tracking-tight">
                         {isMomoSuccess
-                            ? (dbStatus === 'PAID' ? 'Thanh toán thành công!' : 'Đang xử lý giao dịch...')
-                            : 'Thanh toán thất bại'}
+                            ? (dbStatus === 'PAID' ? 'Payment Success!' : 'Payment Pending...')
+                            : 'Payment Failed'}
                     </CardTitle>
                     <CardDescription className="text-sm text-muted-foreground mt-1 px-4">
                         {isMomoSuccess
@@ -105,23 +105,23 @@ export default function CheckoutResultPage(props: any) {
                 <CardContent className="space-y-4 px-6">
                     <div className="rounded-xl bg-slate-50 p-4 border border-slate-100/80 space-y-3 text-sm font-medium">
                         <div className="flex justify-between items-center text-muted-foreground">
-                            <span>Mã đơn hàng</span>
+                            <span>Order Code</span>
                             <span className="text-foreground font-mono select-all bg-white px-2 py-0.5 border border-slate-200/60 rounded-md text-xs">
                                 {orderId || 'N/A'}
                             </span>
                         </div>
 
                         <div className="flex justify-between items-center text-muted-foreground">
-                            <span>Phương thức</span>
+                            <span>Payment Method</span>
                             <span className="text-foreground flex items-center gap-1.5 font-semibold">
                                 <span className="w-2 h-2 rounded-full bg-pink-500 inline-block"></span>
-                                Ví điện tử MoMo
+                                Momo Wallet
                             </span>
                         </div>
 
                         {amount && (
                             <div className="flex justify-between items-center text-muted-foreground pt-2 border-t border-slate-200/60">
-                                <span className="text-foreground font-semibold">Tổng thanh toán</span>
+                                <span className="text-foreground font-semibold">Total</span>
                                 <span className="text-xl font-bold text-red-500 font-mono">
                                     {Number(amount).toLocaleString('vi-VN')} VND
                                 </span>
@@ -162,7 +162,7 @@ export default function CheckoutResultPage(props: any) {
                     ) : (
                         <Button variant="default" asChild className="w-full text-white font-medium">
                             <Link href="/cart">
-                                Thử thanh toán lại
+                                Retry payment process
                             </Link>
                         </Button>
                     )}
@@ -170,7 +170,7 @@ export default function CheckoutResultPage(props: any) {
                     <Button asChild variant="outline" className="w-full border-muted text-muted-foreground hover:text-foreground">
                         <Link href="/products">
                             <ShoppingBag className="mr-2 h-4 w-4" />
-                            Tiếp tục mua sắm
+                            Continue shopping
                         </Link>
                     </Button>
                 </CardFooter>

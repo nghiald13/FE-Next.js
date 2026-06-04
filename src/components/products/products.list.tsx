@@ -79,11 +79,11 @@ const ProductsListPage = (props: any) => {
                                             {product?.name}
                                         </CardTitle>
                                         <CardDescription className="text-sm font-medium text-foreground/90 font-mono">
-                                            ${product?.price}
+                                            {Number(product?.price).toLocaleString('vi-VN')} VND
                                         </CardDescription>
                                     </CardHeader>
 
-                                    <CardFooter className="p-4 pt-0">
+                                    <CardFooter className="p-4 pt-0 bg-white">
                                         <Button
                                             className="w-full text-xs font-medium"
                                             variant="secondary"

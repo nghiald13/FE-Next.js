@@ -108,7 +108,12 @@ const DashboardUserUpdate = (props: any) => {
                                             }
                                         </FieldDescription>
                                     </FieldContent>
-                                    <Switch name="isActive" onClick={() => setSwitchVal(!switchVal)} id="switch-active" defaultChecked={user.isActive} />
+                                    <Switch
+                                        id="switch-active"
+                                        name="isActive"
+                                        checked={switchVal}
+                                        onCheckedChange={(checked) => setSwitchVal(checked)}
+                                    />
                                 </Field>
                             </FieldLabel>
                         </FieldGroup>

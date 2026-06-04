@@ -12,8 +12,12 @@ const ResultsPagination = (props: any) => {
 
     const toPage = (e: any, page: number) => {
         e.preventDefault()
-        const kw = searchParams.get('kw') || ''
-        router.push(`${url}?${queryString.stringify({ kw, current: page })}`)
+
+        const q = {
+            kw: searchParams.get('kw') || '',
+            manufacturer: searchParams.get('manufacturer') || ''
+        }
+        router.push(`${url}?${queryString.stringify({...q, current: page}, {skipEmptyString: true, skipNull: true})}`)
     }
 
     if (+meta?.totalPages <= 1) return <></>

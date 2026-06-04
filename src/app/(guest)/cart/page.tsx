@@ -1,32 +1,15 @@
 import { auth } from "@/auth";
 import CartBilling from "@/components/cart/cart.billings";
 import CartItems from "@/components/cart/cart.items";
+import { Button } from "@/components/ui/button";
 import { getListProducts } from "@/utils/actions";
 import { getCartFromCookie } from "@/utils/cart.actions";
+import { ShoppingBag, Undo2 } from "lucide-react";
+import Link from "next/link";
 import queryString from "query-string";
 
-// Mock Data dữ liệu sản phẩm trong giỏ hàng
-const MOCK_CART = [
-    {
-        id: "p1",
-        name: "Wireless Over-Ear Headphones (Noise Cancelling)",
-        price: 299,
-        quantity: 1,
-        manufacturer: "Sony",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&auto=format&fit=crop&q=80"
-    },
-    {
-        id: "p2",
-        name: "Mechanical Gaming Keyboard RGB v2",
-        price: 145,
-        quantity: 2,
-        manufacturer: "Keychron",
-        image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&auto=format&fit=crop&q=80"
-    }
-];
-
 const CartPage = async () => {
-    
+
     const session = await auth()
 
     // 1. Lấy mảng [{id, quantity}] từ cookie trên Server
@@ -49,7 +32,7 @@ const CartPage = async () => {
             const detail = productsDetail.results.find((p: any) => p._id === cartItem.id);
             return {
                 ...detail,
-                amount: cartItem.amount // Giữ số lượng từ cookie
+                quantity: cartItem.quantity // Giữ số lượng từ cookie
             };
         })
 
@@ -57,9 +40,12 @@ const CartPage = async () => {
 
     return (
         <>
-            <div className="mb-8">
+            <Button variant="outline" asChild>
+                <Link href="/products"><Undo2 /> Back to shopping</Link>
+            </Button>
+            <div className="mb-8 text-center">
                 <h1 className="text-3xl font-bold tracking-tight text-foreground">Shopping Cart</h1>
-                <p className="text-muted-foreground mt-1">Bạn đang có {anonymousCart.length || 0} mặt hàng trong giỏ sản phẩm.</p>
+                <p className="text-muted-foreground mt-1">Currently has {anonymousCart.length || 0} items in the cart</p>
             </div>
 
             {/* Bố cục Grid tổng thể */}

@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Source_Serif_4, IBM_Plex_Mono } from "next/font/google"
+import { cn } from "@/lib/utils"
 import '@/app/globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin', 'latin-ext', 'cyrillic', 'cyrillic-ext', 'greek', 'greek-ext', 'vietnamese'], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], variable: '--font-inter' });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const sourceSerif4 = Source_Serif_4({ subsets: ['latin', 'latin-ext', 'cyrillic', 'cyrillic-ext', 'greek', 'vietnamese'], weight: ['200', '300', '400', '500', '600', '700', '800', '900'], variable: '--font-source-serif-4' });
+
+const iBMPlexMono = IBM_Plex_Mono({ subsets: ['latin', 'latin-ext', 'cyrillic', 'cyrillic-ext', 'vietnamese'], weight: ['100', '200', '300', '400', '500', '600', '700'], variable: '--font-ibm-plex-mono' });
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +23,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full antialiased", inter.variable, sourceSerif4.variable, iBMPlexMono.variable)}
     >
       <body className="min-h-full flex flex-col">
         {children}

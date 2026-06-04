@@ -42,7 +42,7 @@ export function SignInForm({
     if (res?.error) {
       //If exists error, notify user regardless cases
       toast.error(res.error, {
-        description: res.errorMsg
+        description: <p className="text-black">{res.errorMsg}</p>
       })
 
       //Case inactive account: redirect user to verify page after 5secs delay
