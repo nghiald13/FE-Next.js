@@ -7,7 +7,7 @@ import { Separator } from "../ui/separator"
 import { processPayment } from "@/utils/cart.actions"
 import { toast } from "sonner"
 import { error } from "console"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 const CartBilling = (props: any) => {
     const router = useRouter()
