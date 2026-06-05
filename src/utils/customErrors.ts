@@ -12,13 +12,9 @@ export class CustomError extends AuthError {
 }
 
 export class InvalidSignInError extends AuthError {
-    static type = 'Incorrect email/password'
+    static type = 'IncorrectCredentials'
 }
 
 export class InactivateAccountError extends AuthError {
-    static type = 'Inactive account'
-}
-
-export class ExpiredAcessToken extends AuthError {
-    
+    static type = 'InactivatedAccount'
 }

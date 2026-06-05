@@ -12,29 +12,17 @@ export async function authenticate(email: string, password: string) {
       redirect: false
     })
     return res
-  } catch (err) {
-    let errorName, errorMsg
-
-    // Case invalid signin credentials
-    if ((err as any).name === "InvalidSignInError") {
-      errorName = "Incorrect email/password"
-      errorMsg = "You have entered an incorrect email or password. Please try again!"
-
-      // Case inactivate account
-    } else if ((err as any).name === "InactivateAccountError") {
-      errorName = "Inactivated account"
-      errorMsg = "Your account has not been verified yet. You will be redirect to verification process page in 5 seconds."
-
-      // Whatever else
-    } else {
-      errorName = "Internal server error"
-      errorMsg = "Oops! Looks like we're having troubles right now. Please try again later"
-    }
-
-    return {
-      error: (err as any).name,
-      errorName: errorName,
-      errorMsg: errorMsg,
+  } catch (err: any) {
+    if (err.type === 'IncorrectCredentials') {
+      return {
+        ok: false, statusCode: 401, error: "Incorrect sign in credentials", message: "You have entered an incorrect email/password. Please check again"
+      }
+    } else if (err.type === 'InactivatedAccount') {
+      return {
+        ok: false, statusCode: 400, error: "Inactivated Account", message: "Your account hasn't been verified yet. You will be redirected for the process."
+      }
+    } else return {
+      ok: false, statusCode: 500, error: "Internal Server Error", message: "Oops! Something is wrong. Try again later!"
     }
   }
 }

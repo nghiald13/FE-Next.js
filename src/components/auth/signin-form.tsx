@@ -38,15 +38,14 @@ export function SignInForm({
     }
 
     const res = await authenticate(values.email, values.password)
-    console.log(res)
     if (res?.error) {
       //If exists error, notify user regardless cases
       toast.error(res.error, {
-        description: <p className="text-black">{res.errorMsg}</p>
+        description: <p className="text-black">{res.message}</p>
       })
 
       //Case inactive account: redirect user to verify page after 5secs delay
-      if (res.error === "InactivateAccountError") {
+      if (res.statusCode === 400) {
         setTimeout(() => {
           router.push(`/auth/verify/${values.email}`)
         }, 5000)
@@ -57,7 +56,7 @@ export function SignInForm({
       //Case no error (signin successfully)
     } else {
       // redirect
-      router.push('/dashboard')
+      router.push('/products')
     }
   }
 
