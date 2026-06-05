@@ -1,8 +1,9 @@
-import { Sparkles, BadgeCheck, CreditCard, Bell, LogOut, LogIn } from "lucide-react"
+import { Sparkles, BadgeCheck, CreditCard, Bell, LogOut, LogIn, Cog } from "lucide-react"
 import { Avatar, AvatarImage } from "../ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { SidebarFooter, SidebarMenuButton } from "../ui/sidebar"
 import { signOut } from "next-auth/react"
+import Link from "next/link"
 
 const SidebarUserFooter = (props: any) => {
 
@@ -14,8 +15,8 @@ const SidebarUserFooter = (props: any) => {
                 {!session?.user ?
                     <>
                         <DropdownMenuTrigger asChild>
-                            <SidebarMenuButton className="py-5">
-                                <LogIn />Sign in
+                            <SidebarMenuButton className="py-5" asChild>
+                                <Link href="/auth/signin"><LogIn />Sign in</Link>
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>
                     </>
@@ -38,13 +39,17 @@ const SidebarUserFooter = (props: any) => {
                             align="end"
                             sideOffset={4}
                         >
-                            <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <Sparkles />
-                                    Upgrade to Pro
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
+                            {session.user.role !== 'ADMIN' ? <></> :
+                                <>
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <Cog />
+                                            Upgrade to Pro
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                </>
+                            }
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
                                     <BadgeCheck />

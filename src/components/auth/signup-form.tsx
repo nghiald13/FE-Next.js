@@ -17,6 +17,7 @@ import { CircleCheck, CircleX } from "lucide-react"
 import { Toaster } from "../ui/sonner"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function SignupForm({
   className,
@@ -188,7 +189,7 @@ export function SignupForm({
               Sign up with GitHub
             </Button>
             <FieldDescription className="px-6 text-center">
-              Already have an account? <a href="#">Sign in</a>
+              Already have an account? <Link href="/auth/signin" passHref className="inline underline">Sign in</Link>
             </FieldDescription>
           </Field>
         </FieldGroup>

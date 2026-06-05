@@ -1,4 +1,5 @@
 import { SignupForm } from "@/components/auth/signup-form"
+import BrandLogo from "@/components/layouts/brand-logo"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { GalleryVerticalEndIcon } from "lucide-react"
 
@@ -19,15 +20,7 @@ export default function SignupPage() {
       <div className="flex flex-col col-span-2 gap-4 p-6 md:p-10 ">
         {/* ==================== Brand Logo ==================== */}
         <div className="flex justify-center gap-2 md:justify-start">
-          <a href="#" className="flex items-center gap-2 font-medium">
-            <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Avatar >
-                <AvatarImage src="https://pbs.twimg.com/media/G5IXXkfWoAAhjNQ?format=png&name=360x360" alt="Varka" />
-                <AvatarFallback />
-              </Avatar>
-            </div>
-            Want some drinks?
-          </a>
+          <BrandLogo />
         </div>
 
         {/* ==================== Signup Area ==================== */}
