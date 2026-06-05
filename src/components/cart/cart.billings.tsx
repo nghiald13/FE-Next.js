@@ -24,7 +24,7 @@ const CartBilling = (props: any) => {
         try {
             await processPayment(billing, items)
         } catch (err: any) {
-            toast.error(err.message)
+            toast.error(err)
         }
     }
 
