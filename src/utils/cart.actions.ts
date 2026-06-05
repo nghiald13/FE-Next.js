@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from '@/auth';
+import { error } from 'console';
 import { getCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -66,10 +67,10 @@ export async function updateCartQuantityAction(productId: string, newQuantity: n
 
 export async function processPayment(billing: any, items: any) {
     const session = await auth()
-    if (!session?.user) throw new Error("You must be signed in")
+    if (!session?.user)
+        return { ok: false, statusCode: 401, error: "Unauthorized", message: "You must be signed in to do this action" }
 
     const user = session.user
-
     const fetchURL = `${baseURL}/api/v1/payment`
     const res = await fetch(fetchURL, {
         method: "POST",
@@ -87,6 +88,6 @@ export async function processPayment(billing: any, items: any) {
     if (res.statusCode === 201) {
         return redirect(res.data)
     } else if (res.statusCode === 401) {
-        throw new Error("Sign in session expired.")
-    } else throw new Error("Internal server error")
+        return { ok: false, statusCode: 401, error: "Unauthorized", message: "Sign in session expired" }
+    } else return { ok: false, statusCode: 500, error: "Internal Server Error", message: "Something's wrong with backend" } 
 }

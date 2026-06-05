@@ -6,8 +6,11 @@ import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import { processPayment } from "@/utils/cart.actions"
 import { toast } from "sonner"
+import { error } from "console"
+import { useRouter } from "next/router"
 
 const CartBilling = (props: any) => {
+    const router = useRouter()
     const { items } = props // items in cart
 
     // Tính tổng giá trị đơn hàng sơ bộ
@@ -21,12 +24,18 @@ const CartBilling = (props: any) => {
             totalPrice: subtotal, // UnitPrice * Quantity
             taxAmount: tax,
         }
-        try {
-            await processPayment(billing, items)
-        } catch (err: any) {
-            console.log(err)
-            toast.error(err.message)
+
+        const res = await processPayment(billing, items) // expected a redirect if success
+        if (!res.ok) {
+            toast.error(res.error, {
+                description: res.message
+            })
+
+            if (res.statusCode === 401) {
+                router.push("/auth/signin")
+            }
         }
+
     }
 
     return (
