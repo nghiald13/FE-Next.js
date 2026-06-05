@@ -2,7 +2,7 @@
 
 import { signIn } from "@/auth"
 
-const baseURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}`
+const baseURL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
 
 export async function authenticate(email: string, password: string) {
   try {

@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 const CART_COOKIE_NAME = 'anonymous_cart';
-const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
+const baseURL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
 interface CartItemSummary {
     id: string;
     quantity: number;
