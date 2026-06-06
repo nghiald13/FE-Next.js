@@ -1,6 +1,8 @@
 import { SignInForm } from "@/components/auth/signin-form";
 import BrandLogo from "@/components/layouts/brand-logo";
 import { Toaster } from "@/components/ui/sonner";
+import { Spinner } from "@/components/ui/spinner";
+import { Suspense } from "react";
 
 const SignInPage = () => {
 
@@ -18,7 +20,14 @@ const SignInPage = () => {
           {/* ==================== Signin Area ==================== */}
           <div className="flex flex-1 items-center justify-center">
             <div className="w-full max-w-xs">
-              <SignInForm />
+              <Suspense fallback={
+                <div className="flex flex-col items-center gap-2 text-center">
+                  <Spinner />
+                  <p className="text-sm text-muted-foreground">Loading login form...</p>
+                </div>
+              }>
+                <SignInForm />
+              </Suspense>
             </div>
           </div>
         </div>

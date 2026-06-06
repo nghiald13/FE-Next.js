@@ -6,13 +6,11 @@ import { Input } from "../ui/input"
 import { Separator } from "../ui/separator"
 import { processPayment } from "@/utils/cart.actions"
 import { toast } from "sonner"
-import { error } from "console"
 import { usePathname, useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 
 const CartBilling = (props: any) => {
     const currentPath = usePathname()
-    const router = useRouter()
     const { items } = props // items in cart
 
     // Tính tổng giá trị đơn hàng sơ bộ
