@@ -37,19 +37,19 @@ const navigationData = {
         { title: "Users Management", url: "/dashboard/user", icon: Users },
         { title: "Products Inventory", url: "#", icon: Boxes },
     ],
-    system: [
-        {
-            title: "Settings",
-            url: "/dashboard/settings",
-            icon: Settings,
-            hasSub: true,
-            subMenu: [
-                { title: "General", url: "/dashboard/settings/general" },
-                { title: "Roles & Permissions", url: "/dashboard/settings/permissions", icon: ShieldCheck },
-            ]
-        },
-        { title: "Documentation", url: "/dashboard/docs", icon: FileText }
-    ]
+    // system: [
+    //     {
+    //         title: "Settings",
+    //         url: "/dashboard/settings",
+    //         icon: Settings,
+    //         hasSub: true,
+    //         subMenu: [
+    //             { title: "General", url: "/dashboard/settings/general" },
+    //             { title: "Roles & Permissions", url: "/dashboard/settings/permissions", icon: ShieldCheck },
+    //         ]
+    //     },
+    //     { title: "Documentation", url: "/dashboard/docs", icon: FileText }
+    // ]
 }
 
 const UserSideBar = (props: any) => {
@@ -60,7 +60,7 @@ const UserSideBar = (props: any) => {
         <Sidebar collapsible="offcanvas" variant="sidebar" className="border-r border-border bg-sidebar text-sidebar-foreground">
 
             {/* HEADER */}
-            <SidebarHeader className="h-16 flex items-center px-6 border-b border-border">
+            <SidebarHeader className="px-4 py-4 border-b border-sidebar-border">
                 <BrandLogo />
             </SidebarHeader>
 
@@ -100,7 +100,7 @@ const UserSideBar = (props: any) => {
                 </SidebarGroup>
 
                 {/* NHÓM 2: SYSTEM & HELP */}
-                <SidebarGroup>
+                {/* <SidebarGroup>
                     <SidebarGroupLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-3 mb-2">
                         Preferences
                     </SidebarGroupLabel>
@@ -160,7 +160,7 @@ const UserSideBar = (props: any) => {
                             })}
                         </SidebarMenu>
                     </SidebarGroupContent>
-                </SidebarGroup>
+                </SidebarGroup> */}
 
             </SidebarContent>
 
