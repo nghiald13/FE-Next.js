@@ -7,9 +7,11 @@ import { Separator } from "../ui/separator"
 import { processPayment } from "@/utils/cart.actions"
 import { toast } from "sonner"
 import { error } from "console"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { signIn } from "next-auth/react"
 
 const CartBilling = (props: any) => {
+    const currentPath = usePathname()
     const router = useRouter()
     const { items } = props // items in cart
 
@@ -28,11 +30,11 @@ const CartBilling = (props: any) => {
         const res = await processPayment(billing, items) // expected a redirect if success
         if (!res.ok) {
             toast.error(res.error, {
-                description: res.message
+                description: <span className="text-black">{res.message}</span>
             })
 
             if (res.statusCode === 401) {
-                router.push("/auth/signin")
+                return signIn(undefined, {redirectTo: currentPath})
             }
         }
 

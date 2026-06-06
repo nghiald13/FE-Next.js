@@ -1,19 +1,24 @@
 'use server'
 
 import { signIn } from "@/auth"
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 
 const baseURL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
 
-export async function authenticate(email: string, password: string) {
+export async function authenticate(email: string, password: string, callbackUrl?: string) {
   try {
-    const res = await signIn("credentials", {
-      email: email,
-      password: password,
-      redirect: false
-    })
+    let credentials = {
+      email: email, password: password, redirectTo: callbackUrl
+    }
+    if (!callbackUrl || callbackUrl === '')
+      delete credentials.redirectTo
+    const res = await signIn("credentials", credentials)
     return res
   } catch (err: any) {
-    if (err.type === 'IncorrectCredentials') {
+    // Upon successfull sign in, if there is an callbackUrl given, Next.js mechanic will throw redirect as an EXCEPTION, so catch it first
+    if (isRedirectError(err))
+      throw err
+    else if (err.type === 'IncorrectCredentials') {
       return {
         ok: false, statusCode: 401, error: "Incorrect sign in credentials", message: "You have entered an incorrect email/password. Please check again"
       }

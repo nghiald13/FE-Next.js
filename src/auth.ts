@@ -57,9 +57,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
 
-    authorized: async ({ auth }) => {
+    authorized: async ({ auth, request: { nextUrl } }) => {
       // Logged in users are authenticated, otherwise redirect to login page
       return !!auth
+
     },
   },
 

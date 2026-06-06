@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { authenticate } from "@/utils/actions"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { Spinner } from "../ui/spinner"
 import Link from "next/link"
@@ -22,6 +22,8 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || ''
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -37,7 +39,7 @@ export function SignInForm({
       password: formData.get('password') as string,
     }
 
-    const res = await authenticate(values.email, values.password)
+    const res = await authenticate(values.email, values.password, callbackUrl)
     if (res?.error) {
       //If exists error, notify user regardless cases
       toast.error(res.error, {
