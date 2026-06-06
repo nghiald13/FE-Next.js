@@ -42,9 +42,10 @@ const SidebarUserFooter = (props: any) => {
                             {session.user.role !== 'ADMIN' ? <></> :
                                 <>
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem>
-                                            <Cog />
-                                            Upgrade to Pro
+                                        <DropdownMenuItem asChild>
+                                            <Link href="/dashboard">
+                                                <Cog />Dashboard
+                                            </Link>
                                         </DropdownMenuItem>
                                     </DropdownMenuGroup>
                                     <DropdownMenuSeparator />
