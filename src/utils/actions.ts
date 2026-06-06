@@ -27,12 +27,12 @@ export async function authenticate(email: string, password: string) {
   }
 }
 
-export async function verifyAccount(userId: string, otpCode: string) {
+export async function verifyAccount(email: string, otpCode: string) {
   const fetchURL = `${baseURL}/api/v1/auth/verify`
   const result = await fetch(fetchURL, {
     method: 'POST',
     body: JSON.stringify({
-      "_id": userId,
+      "email": email,
       "codeId": otpCode
     }),
     headers: new Headers({

@@ -1,10 +1,10 @@
 import AccountVerifyForm from "@/components/auth/verify-form"
 
 const VerifyPage = async (
-    { params, }: { params: { _id: string } }
+    { params, }: { params: { email: string } }
 ) => {
-    const { _id } = await params
-    const decoder_id = decodeURIComponent(_id)
+    const { email } = await params
+    const decoder_id = decodeURIComponent(email)
 
     return (
         <>
@@ -22,7 +22,7 @@ const VerifyPage = async (
                 {/** =================== Right Area =================== */}
 
                 < div className="col-span-2 flex flex-1 justify-center items-center min-h-screen" >
-                    <AccountVerifyForm _id={decoder_id} />
+                    <AccountVerifyForm email={decoder_id} />
                 </div >
             </div >
         </>

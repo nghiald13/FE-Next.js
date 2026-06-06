@@ -31,7 +31,7 @@ const AccountVerifyForm = (props: any) => {
     const router = useRouter()
 
     // get params from url
-    const { _id } = props
+    const { email } = props
 
     // spinner states
     const [isLoading, setIsLoading] = useState(false)
@@ -42,7 +42,7 @@ const AccountVerifyForm = (props: any) => {
             setIsLoading(true)
             // call backend here
             try {
-                const isVerified = await verifyAccount(_id, val)
+                const isVerified = await verifyAccount(email, val)
                 if (isVerified) {
                     toast.success("Your account has been verified. Thank you!")
                     setTimeout(() => {
@@ -85,7 +85,7 @@ const AccountVerifyForm = (props: any) => {
             description: "A verification code has been sent to your email. Please check and continue the process!",
         })
 
-        await sendVerificationEmail(_id)
+        await sendVerificationEmail(email)
     }
 
     return (
