@@ -75,7 +75,7 @@ export function SignupForm({
       if (!result?.error) {
         toast.success("Sign up successfully. You will be redirected in 5 seconds for next step")
         setTimeout(() => {
-          router.push(`/auth/verify/${result._id}`)
+          router.push(`/auth/verify/${values.email}`)
         }, 5000)
 
       } else {
