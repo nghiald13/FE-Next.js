@@ -1,3 +1,4 @@
+'use client'
 import { Sparkles, BadgeCheck, CreditCard, Bell, LogOut, LogIn, Cog } from "lucide-react"
 import { Avatar, AvatarImage } from "../ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
@@ -56,9 +57,10 @@ const SidebarUserFooter = (props: any) => {
                                     <BadgeCheck />
                                     Account
                                 </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <CreditCard />
-                                    Billing
+                                <DropdownMenuItem asChild>
+                                    <Link href="/order">
+                                        <CreditCard />Billing
+                                    </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <Bell />

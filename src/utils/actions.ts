@@ -8,10 +8,12 @@ const baseURL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
 export async function authenticate(email: string, password: string, callbackUrl?: string) {
   try {
     let credentials = {
-      email: email, password: password, redirectTo: callbackUrl
+      email: email, password: password, redirectTo: callbackUrl, redirect: true
     }
-    if (!callbackUrl || callbackUrl === '')
+    if (!callbackUrl || callbackUrl === '') {
       delete credentials.redirectTo
+      credentials.redirect = false
+    }
     const res = await signIn("credentials", credentials)
     return res
   } catch (err: any) {
@@ -177,4 +179,81 @@ export async function getListManufacturers() {
   }).then(res => res.json())
 
   return result.data
+}
+
+export async function getListOrders(userId: string, access_token: string) {
+  const fetchURL = `${baseURL}/api/v1/orders`
+  const result = await fetch(fetchURL, {
+    method: 'POST',
+    body: JSON.stringify({
+      userId: userId
+    }),
+    headers: new Headers({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${access_token}`
+    })
+  }).then(res => res.json())
+
+  if (result.statusCode === 201) {
+    return {
+      ok: true,
+      statusCode: 201,
+      data: result.data
+    }
+  } else if (result.statusCode === 400) {
+    return {
+      ok: false,
+      statusCode: 400,
+      message: "Bad Request"
+    }
+  } else if (result.statusCode === 401) {
+    return {
+      ok: false,
+      statusCode: 401,
+      message: "You must be signed in"
+    }
+  } else {
+    return {
+      ok: false,
+      statusCode: 500,
+      message: "Oops! Something's wrong. Try again later!"
+    }
+  }
+}
+
+export async function getOrderById(_id:string, access_token: string) {
+  const fetchURL = `${baseURL}/api/v1/orders/${_id}`
+  const result = await fetch(fetchURL, {
+    method: 'GET',
+    headers: new Headers({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${access_token}`
+    })
+  }).then(res => res.json())
+
+  if (result.statusCode === 200) {
+    return {
+      ok: true,
+      statusCode: 200,
+      data: result.data
+    }
+  } else if (result.statusCode === 400) {
+    return {
+      ok: false,
+      statusCode: 400,
+      message: "Bad Request"
+    }
+  } else if (result.statusCode === 401) {
+    return {
+      ok: false,
+      statusCode: 401,
+      message: "You must be signed in"
+    }
+  } else {
+    return {
+      ok: false,
+      statusCode: 500,
+      message: "Oops! Something's wrong. Try again later!"
+    }
+  }
 }
