@@ -50,12 +50,12 @@ export async function verifyAccount(email: string, otpCode: string) {
   return result.data
 }
 
-export async function sendVerificationEmail(userId: string) {
+export async function sendVerificationEmail(email: string) {
   const fetchURL = `${baseURL}/api/v1/auth/sendEmail`
   const result = await fetch(fetchURL, {
     method: 'POST',
     body: JSON.stringify({
-      "_id": userId,
+      "email": email,
     }),
     headers: new Headers({
       "content-type": "application/json"
