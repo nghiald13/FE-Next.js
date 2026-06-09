@@ -21,15 +21,18 @@ const CartItems = (props: CartItemsProps) => {
     };
 
     const handleItemDelete = (_id: string) => {
-        const currentToast = toast("Confirm removing an item from cart!", {
+        const toastId = `delete-cart-item-${_id}`
+        toast("Confirm removing an item from cart!", {
+            id: toastId,
             icon: <Megaphone />,
             position: "top-center",
             description: <p className="text-black">You are removing an item from cart. Proceed?<br /><span className="italic">(dismiss this notification if you are unsure)</span></p>,
             action: {
                 label: "Confirm",
                 onClick: async () => {
+                    toast.dismiss(toastId);
                     await updateCartQuantityAction(_id, 0)
-                    toast.success("Removed an item from cart", { id: currentToast })
+                    toast.success("Removed an item from cart")
                 }
             }
         })
