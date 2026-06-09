@@ -56,7 +56,7 @@ const ProductsListPage = (props: any) => {
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {listProducts?.map((product: any) => (
                             /* Bọc Card bằng Link để hướng tới trang chi tiết */
-                            <Link href={`/products/${product?._id}`} key={product?._id} className="group block h-full">
+                            <Link href="#" key={product?._id} className="group block h-full">
                                 <Card className="
                   h-full overflow-hidden border border-muted bg-card shadow-sm
                   hover:shadow-md transition-all duration-300 select-none cursor-pointer
