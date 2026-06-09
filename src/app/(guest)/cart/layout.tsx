@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { getCartFromCookie } from "@/utils/cart.actions";
 
 const CartLayout = async ({
@@ -7,13 +8,16 @@ const CartLayout = async ({
 }>) => {
 
     return (
-        <div className="w-full bg-slate-50/50 min-h-screen py-10">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <>
+            <Toaster />
+            <div className="w-full bg-slate-50/50 min-h-screen py-10">
+                <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
 
 
-                {children}
+                    {children}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

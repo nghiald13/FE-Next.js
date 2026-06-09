@@ -9,6 +9,7 @@ import { ShoppingCart } from "lucide-react"
 import { addToCartAction } from "@/utils/cart.actions"
 import { useEffect, useState } from "react"
 import { getCookie } from "cookies-next/client"
+import { toast } from "sonner"
 
 const ProductsListPage = (props: any) => {
 
@@ -27,6 +28,11 @@ const ProductsListPage = (props: any) => {
     }, [])
 
     const [cartAmount, setCartAmount] = useState<number>(0)
+
+    const handleAddToCart = async (productId: string) => {
+        await addToCartAction(productId, 1)
+        setCartAmount(prev => prev + 1)
+    }
 
     return (
         <>
@@ -88,9 +94,12 @@ const ProductsListPage = (props: any) => {
                                             className="w-full text-xs font-medium"
                                             variant="secondary"
                                             onClick={(e) => {
-                                                e.preventDefault(); // 💡 Chặn không cho kích hoạt click của thẻ Link cha
-                                                addToCartAction(product._id, 1)
-                                                setCartAmount(prev => prev + 1)
+                                                e.preventDefault()
+                                                handleAddToCart(product._id)
+                                                toast.success("An item has been added to your cart", {
+                                                    description: <span className="text-black">{product.name} * 1 added</span>,
+                                                    position: "top-center"
+                                                })
                                             }}
                                         >
                                             Add to cart
@@ -101,7 +110,7 @@ const ProductsListPage = (props: any) => {
                         ))}
                     </div>
                 </main>
-            </ScrollArea>
+            </ScrollArea >
         </>
 
     )

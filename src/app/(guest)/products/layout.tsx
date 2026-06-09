@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { ProductsSidebar } from "@/components/products/products.sidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { getListManufacturers } from "@/utils/actions";
 
 const ProductPageLayout = async ({
@@ -15,6 +16,7 @@ const ProductPageLayout = async ({
 
     return (
         <>
+            <Toaster />
             <SidebarProvider>
                 <ProductsSidebar listManufacturers={listManufacturers} session={session} />
                 <SidebarTrigger className="sticky top-0" />

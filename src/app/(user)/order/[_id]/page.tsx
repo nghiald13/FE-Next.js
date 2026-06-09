@@ -76,8 +76,8 @@ const OrderDetailsPage = async (
                         </h3>
                         <p><span className="text-slate-500">Ngày tạo đơn:</span> {new Date(order.createdAt).toLocaleString("vi-VN")}</p>
                         <p><span className="text-slate-500">Hình thức thanh toán:</span> <span className="font-medium text-slate-800">{order.paymentMethod}</span></p>
-                        <p><span className="text-slate-500">Mã Giao dịch:</span> <span className="font-medium text-slate-800">{order.momoTransId}</span></p>
-                        <p><span className="text-slate-500">Thực hiện lúc:</span> <span className="font-medium text-slate-800">{new Date(order.paymentAt).toLocaleString("vi-VN")}</span></p>
+                        <p><span className="text-slate-500">Mã Giao dịch:</span> <span className="font-medium text-slate-800">{order?.momoTransId || "PENDING"}</span></p>
+                        <p><span className="text-slate-500">Thực hiện lúc:</span> <span className="font-medium text-slate-800">{new Date(order.paymentAt)?.toLocaleString("vi-VN") || "PENDING"}</span></p>
                     </div>
                 </div>
 

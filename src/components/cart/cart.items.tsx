@@ -6,7 +6,6 @@ import { updateCartQuantityAction } from "@/utils/cart.actions"
 import { useTransition } from "react"
 import CartAmountControl from "./cart.amount.control"
 import { toast } from "sonner"
-import { Toaster } from "../ui/sonner"
 
 interface CartItemsProps {
     items: any[]
@@ -48,7 +47,6 @@ const CartItems = (props: CartItemsProps) => {
 
     return (
         <>
-            <Toaster />
             <div className="space-y-4">
                 {items.map((item) => (
                     <Card key={item._id} className="relative overflow-hidden bg-white border-muted shadow-xs hover:shadow-md transition-shadow">
