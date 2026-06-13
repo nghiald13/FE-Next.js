@@ -17,6 +17,7 @@ import { Spinner } from "../ui/spinner"
 import Link from "next/link"
 import { toast } from "sonner"
 import { signIn } from "next-auth/react"
+import ContinueWithGoogleBtn from "../layouts/ctn-google"
 
 
 export function SignInForm({
@@ -109,19 +110,7 @@ export function SignInForm({
         </Field>
         <FieldSeparator>Or continue with</FieldSeparator>
         <Field>
-          <Button
-            onClick={() => signIn("google", { redirectTo: "/products" })}
-            variant="outline"
-            type="button"
-            className="w-full py-3 flex items-center justify-center gap-3 font-medium text-gray-700 hover:bg-gray-50 border-gray-300 rounded-xl shadow-sm transition-all duration-200"
-          >
-            <img
-              className="w-6 h-6 object-contain"
-              src="/google-icons/svg/light/web_light_rd_na.svg"
-              alt="Google Logo"
-            />
-            <span>Continue with Google</span>
-          </Button>
+          <ContinueWithGoogleBtn />
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
             <Link href="/auth/signup" passHref className="inline underline">Sign up</Link>
