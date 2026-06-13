@@ -186,7 +186,7 @@ export function SignupForm({
                   fill="currentColor"
                 />
               </svg>
-              Sign up with GitHub
+              Sign up with Google
             </Button>
             <FieldDescription className="px-6 text-center">
               Already have an account? <Link href="/auth/signin" passHref className="inline underline">Sign in</Link>
