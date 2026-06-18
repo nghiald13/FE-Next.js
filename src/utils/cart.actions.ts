@@ -1,7 +1,6 @@
 'use server'
 
 import { auth } from '@/auth';
-import { error } from 'console';
 import { getCookie, setCookie } from 'cookies-next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';

@@ -11,8 +11,12 @@ const ProductPageLayout = async ({
 }>) => {
 
     const session = await auth()
-
-    const listManufacturers = await getListManufacturers()
+    let listManufacturers = []
+    try {
+        listManufacturers = await getListManufacturers()
+    } catch (e) {
+        console.error(">>> Không lấy được danh sách nhà sản xuất:", e)
+    }
 
     return (
         <>

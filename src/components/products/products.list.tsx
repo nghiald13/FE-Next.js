@@ -2,117 +2,94 @@
 
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { ScrollArea } from "../ui/scroll-area"
-import { ShoppingCart } from "lucide-react"
-import { addToCartAction } from "@/utils/cart.actions"
-import { useEffect, useState } from "react"
-import { getCookie } from "cookies-next/client"
+import { PackageX } from "lucide-react"
 import { toast } from "sonner"
+import FloatingCart from "./floating-cart"
+import { addToCartAction } from "@/utils/cart.actions"
 
-const ProductsListPage = (props: any) => {
-
-    const { listProducts } = props
-
-    useEffect(() => {
-        const cartCookie = getCookie('anonymous_cart')
-        if (cartCookie) {
-            try {
-                const cart = JSON.parse(cartCookie as string)
-                setCartAmount(cart.length)
-            } catch (e) {
-                setCartAmount(0)
-            }
-        }
-    }, [])
-
-    const [cartAmount, setCartAmount] = useState<number>(0)
+const ProductsListPage = ({ listProducts }: { listProducts: any[] }) => {
 
     const handleAddToCart = async (productId: string) => {
-        await addToCartAction(productId, 1)
-        setCartAmount(prev => prev + 1)
+        try {
+            await addToCartAction(productId, 1)
+            window.dispatchEvent(new Event('cart-update'))
+        } catch (error) {
+            console.error("Lỗi thêm vào giỏ hàng:", error)
+        }
+    }
+
+    // List Products Empty
+    if (!listProducts || listProducts.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[50vh] border border-dashed rounded-2xl border-slate-200 bg-white p-8">
+                <div className="p-4 bg-amber-50 rounded-full text-amber-500 mb-4">
+                    <PackageX className="w-8 h-8" />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-800">No components found</h3>
+                <p className="text-sm text-slate-500 mt-1 max-w-sm text-center">
+                    The connection to the catalog database was interrupted or no items match your filters. Please check back shortly.
+                </p>
+            </div>
+        )
     }
 
     return (
         <>
-            {/** Sticky Cart */}
-            <div className="fixed top-5 right-5 z-50">
-                <Link href="/cart">
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        className="rounded-full w-14 h-14 bg-white shadow-lg relative hover:scale-105 transition-transform"
-                    >
-                        <ShoppingCart className="size-6 text-foreground" />
+            <FloatingCart />
 
-                        {cartAmount > 0 && (
-                            <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground font-mono font-bold text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-sm animate-in zoom-in duration-200">
-                                {cartAmount}
-                            </span>
-                        )}
-                    </Button>
-                </Link>
-            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                {listProducts.map((product: any) => (
+                    <Link href={`/products/${product?._id}`} key={product?._id} className="group block h-full">
+                        <Card className="h-full overflow-hidden border border-slate-100 bg-white shadow-xs rounded-2xl group-hover:shadow-md group-hover:border-slate-200 transition-all duration-300 flex flex-col justify-between">
 
-            <ScrollArea className="flex flex-col lg:flex-row gap-8 w-full h-[75vh] p-4">
-                {/* 🌟 LƯỚI HIỂN THỊ SẢN PHẨM (PRODUCT GRID) */}
-                <main className="flex-1">
-                    {/* Tự động chia cột linh hoạt: 1 cột di động, 2 cột tablet, 3 cột PC */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {listProducts?.map((product: any) => (
-                            /* Bọc Card bằng Link để hướng tới trang chi tiết */
-                            <Link href="#" key={product?._id} className="group block h-full">
-                                <Card className="
-                  h-full overflow-hidden border border-muted bg-card shadow-sm
-                  hover:shadow-md transition-all duration-300 select-none cursor-pointer
-                  hover:scale-[1.02] 
-                ">
-                                    {/* Tỉ lệ khung ảnh 4/3 */}
-                                    <AspectRatio ratio={4 / 3} className="bg-muted overflow-hidden relative">
+                            <div>
+                                <div className="p-2">
+                                    <AspectRatio ratio={4 / 3} className="bg-slate-50 overflow-hidden relative rounded-xl">
                                         <img
                                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                            src={product?.image ? product?.image : "https://images.unsplash.com/photo-1649399337535-afbf61e74cab?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                                            src={product?.image || "https://images.unsplash.com/photo-1649399337535-afbf61e74cab?q=80&w=1170&auto=format&fit=crop"}
                                             alt={product?.name}
+                                            loading="lazy"
                                         />
-                                        <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-xs px-2 py-0.5 rounded text-xs font-semibold shadow-xs">
-                                            {product?.manufacturer}
+                                        <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider text-slate-600 shadow-xs border border-white/40">
+                                            {product?.manufacturer || 'Generic'}
                                         </div>
                                     </AspectRatio>
+                                </div>
 
-                                    <CardHeader className="p-4 space-y-1">
-                                        <CardTitle className="text-base font-semibold tracking-tight line-clamp-1 group-hover:text-primary transition-colors">
-                                            {product?.name}
-                                        </CardTitle>
-                                        <CardDescription className="text-sm font-medium text-foreground/90 font-mono">
-                                            {Number(product?.price).toLocaleString('vi-VN')} VND
-                                        </CardDescription>
-                                    </CardHeader>
+                                <CardHeader className="px-4 py-2 space-y-1">
+                                    <CardTitle className="text-sm md:text-base font-semibold text-slate-800 line-clamp-2 min-h-[2.5rem] group-hover:text-blue-600 transition-colors duration-200">
+                                        {product?.name}
+                                    </CardTitle>
+                                    <CardDescription className="text-base font-bold text-slate-900 font-mono">
+                                        {Number(product?.price || 0).toLocaleString('vi-VN')} <span className="text-xs text-slate-400 font-sans font-normal">VND</span>
+                                    </CardDescription>
+                                </CardHeader>
+                            </div>
 
-                                    <CardFooter className="p-4 pt-0 bg-white">
-                                        <Button
-                                            className="w-full text-xs font-medium"
-                                            variant="secondary"
-                                            onClick={(e) => {
-                                                e.preventDefault()
-                                                handleAddToCart(product._id)
-                                                toast.success("An item has been added to your cart", {
-                                                    description: <span className="text-black">{product.name} * 1 added</span>,
-                                                    position: "top-center"
-                                                })
-                                            }}
-                                        >
-                                            Add to cart
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            </Link>
-                        ))}
-                    </div>
-                </main>
-            </ScrollArea >
+                            <div className="p-4 pt-0">
+                                <Button
+                                    className="w-full text-xs font-semibold h-9 rounded-xl bg-slate-50 hover:bg-primary text-slate-700 hover:text-white border border-slate-200/60 hover:border-transparent transition-all duration-200"
+                                    variant="ghost"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        handleAddToCart(product?._id)
+                                        toast.success("Added to cart", {
+                                            description: <span className="text-black">1x {product.name} has been added.</span>,
+                                            position: "top-center"
+                                        })
+                                    }}
+                                >
+                                    Add to cart
+                                </Button>
+                            </div>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
         </>
-
     )
 }
 

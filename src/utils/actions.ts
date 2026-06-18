@@ -157,6 +157,18 @@ export async function updateUser(user: any, accessToken: string) {
   }
 }
 
+export async function getSingleProduct(productId: string) {
+  const fetchURL = `${baseURL}/api/v1/products/${productId}`
+  const result = await fetch(fetchURL, {
+    method: 'GET',
+    headers: new Headers({
+      "content-type": "application/json"
+    })
+  }).then(res => res.json())
+
+  return result.data
+}
+
 export async function getListProducts(query: string) {
   const fetchURL = `${baseURL}/api/v1/products?${query}`
   const result = await fetch(fetchURL, {
@@ -170,7 +182,7 @@ export async function getListProducts(query: string) {
 }
 
 export async function getListManufacturers() {
-  const fetchURL = `${baseURL}/api/v1/products/manufacturers`
+  const fetchURL = `${baseURL}/api/v1/products/meta/manufacturers`
   const result = await fetch(fetchURL, {
     method: 'GET',
     headers: new Headers({
