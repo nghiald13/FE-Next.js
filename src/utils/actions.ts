@@ -193,6 +193,19 @@ export async function getListManufacturers() {
   return result.data
 }
 
+export async function getProductsStatistics(access_token: string) {
+  const fetchURL = `${baseURL}/api/v1/admin/products/statistics`
+  const result = await fetch(fetchURL, {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${access_token}`
+    })
+  }).then(res => res.json())
+  
+  return result.data
+}
+
 export async function getListOrders(userId: string, access_token: string) {
   const fetchURL = `${baseURL}/api/v1/orders`
   const result = await fetch(fetchURL, {

@@ -35,7 +35,7 @@ const navigationData = {
     management: [
         { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
         { title: "Users Management", url: "/dashboard/user", icon: Users },
-        { title: "Products Inventory", url: "#", icon: Boxes },
+        { title: "Products Inventory", url: "/dashboard/product", icon: Boxes },
     ],
     // system: [
     //     {

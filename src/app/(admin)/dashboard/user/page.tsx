@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import DashboardForbidden from "@/components/dashboard/user/dashboard.forbidden";
+import DashboardForbidden from "@/components/dashboard/dashboard.forbidden";
 import DashboardUserList from "@/components/dashboard/user/dashboard.user.list";
 import ResultsPagination from "@/components/layouts/results-pagination";
 import { getListUsers } from "@/utils/actions";
