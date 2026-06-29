@@ -35,7 +35,7 @@ async function ProductGridWithData({ q }: { q: string }) {
         console.error(">>> Backend đang sập hoặc lỗi kết nối, hiển thị danh sách rỗng:", error);
     }
 
-    return <ProductListPage listProducts={results} />;
+    return <ProductListPage listProducts={results} meta={meta} />;
 }
 
 

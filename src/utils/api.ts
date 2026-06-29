@@ -1,5 +1,7 @@
 import queryString from 'query-string';
 
+const baseURL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL
+
 export const sendRequest = async <T>(props: IRequest) => { //type
     let {
         url,

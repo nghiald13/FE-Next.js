@@ -88,5 +88,5 @@ export async function processPayment(billing: any, items: any) {
         return redirect(res.data)
     } else if (res.statusCode === 401) {
         return { ok: false, statusCode: 401, error: "Unauthorized", message: "Sign in session expired" }
-    } else return { ok: false, statusCode: 500, error: "Internal Server Error", message: "Something's wrong with backend" } 
+    } else return { ok: false, statusCode: 500, error: "Internal Server Error", message: "Something's wrong with backend" }
 }

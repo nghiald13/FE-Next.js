@@ -136,8 +136,7 @@ export default function ManageProductsList(props: any) {
 
             <ResultsPagination
                 url={`/dashboard/product`}
-                current={1}
-                meta={{ totalItems: 1234, totalPages: 3 }}
+                meta={meta}
             />
         </>
     )

@@ -219,7 +219,7 @@ const ProductDetails = (
                     </TabsContent>
 
                     {/* Tab 2: Mô tả bài viết Rich Text lấy từ TipTap */}
-                    <TabsContent value="description" className="mt-4 bg-card p-4 border border-border rounded-xl shadow-2xs focus-visible:outline-hidden">
+                    <TabsContent value="description" className="mt-4 bg-card p-4 lg:px-10 border border-border rounded-xl shadow-2xs focus-visible:outline-hidden">
                         <RichRenderer contentJson={product?.descriptionJson} />
                     </TabsContent>
                 </Tabs>

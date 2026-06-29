@@ -202,7 +202,7 @@ export async function getProductsStatistics(access_token: string) {
       'Authorization': `Bearer ${access_token}`
     })
   }).then(res => res.json())
-  
+
   return result.data
 }
 
@@ -246,7 +246,7 @@ export async function getListOrders(userId: string, access_token: string) {
   }
 }
 
-export async function getOrderById(_id:string, access_token: string) {
+export async function getOrderById(_id: string, access_token: string) {
   const fetchURL = `${baseURL}/api/v1/orders/${_id}`
   const result = await fetch(fetchURL, {
     method: 'GET',

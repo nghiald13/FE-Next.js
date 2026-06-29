@@ -9,7 +9,7 @@ interface IProductsStats {
 const ManageProductStats = (
     props: any
 ) => {
-    const {stats} = props
+    const { stats } = props
     return (
         <>
             {/* 2. STATS CARDS (Khối thống kê nhanh) */}

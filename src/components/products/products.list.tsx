@@ -8,8 +8,15 @@ import { PackageX } from "lucide-react"
 import { toast } from "sonner"
 import FloatingCart from "./floating-cart"
 import { addToCartAction } from "@/utils/cart.actions"
+import ResultsPagination from "../layouts/results-pagination"
 
-const ProductsListPage = ({ listProducts }: { listProducts: any[] }) => {
+const ProductsListPage = ({
+    listProducts, meta
+}: {
+    listProducts: any[],
+    meta: any
+}
+) => {
 
     const handleAddToCart = async (productId: string) => {
         try {
@@ -89,6 +96,9 @@ const ProductsListPage = ({ listProducts }: { listProducts: any[] }) => {
                     </Link>
                 ))}
             </div>
+
+            {/** Pagination */}
+            <ResultsPagination url="/products" meta={meta} />
         </>
     )
 }

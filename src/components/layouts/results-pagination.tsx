@@ -6,9 +6,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const ResultsPagination = (props: any) => {
 
-    const { url, current, meta } = props
+    const { url, meta } = props
     const router = useRouter()
     const searchParams = useSearchParams()
+
+    const current = searchParams.get('current') || 1
 
     const toPage = (e: any, page: number) => {
         e.preventDefault()
@@ -38,7 +40,7 @@ const ResultsPagination = (props: any) => {
                         variant="outline"
                         size="icon"
                         className="size-8 bg-card border-border/80"
-                        disabled={+current === 1} // Trả trực tiếp trạng thái logic từ API vào đây, NestJS chưa có trang < 1
+                        disabled={+current === 1}
                         onClick={(e) => toPage(e, +current - 1)}
                     >
                         <ChevronLeft className="size-4" />
@@ -48,7 +50,7 @@ const ResultsPagination = (props: any) => {
                     {Array.from({ length: +meta?.totalPages }, (_, index) => (
                         <Button
                             key={index}
-                            variant={current === index+1? "default" : "outline"} // Trang hiện tại (Active) thì xài màu đậm của hệ thống
+                            variant={+current === index + 1 ? "default" : "outline"}
                             className="size-8 text-xs font-semibold p-0"
                             onClick={(e) => toPage(e, index + 1)}
                         >
